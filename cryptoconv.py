@@ -13,7 +13,7 @@ import requests
 import datetime
 
 reddit = praw.Reddit('cryptoconv')
-subreddit = reddit.subreddit("gerildtest")
+subreddit = reddit.subreddit("btc")
 
 supported = "(bch|btc|xmr|eth|etc|ltc|usd|eur)"
 regtext = supported + " to " + supported
@@ -29,7 +29,7 @@ else:
 
 
 
-for submission in subreddit.hot(limit=5):
+for submission in subreddit.hot(limit=50):
     submission.comments.replace_more(limit=0)
     for comment in submission.comments.list():
         if comment.id not in posts_replied_to:
@@ -43,9 +43,10 @@ for submission in subreddit.hot(limit=5):
                 price = str(price[tocur])
                 date = str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
                 comment.reply("Conversion Rate: 1 " + fromcur + " is worth " + price + " " + tocur +
-                              "\n \n As of " + date)
+                              "\n \n As of " + date +
+                              "\n \n + *I am a bot, code can be found here: https://github.com/GeraldIr/CryptoConverter*")
                 print("Bot replying to : ", comment.body)
-               # posts_replied_to.append(comment.id)
+                posts_replied_to.append(comment.id)
 
 with open("posts_replied_to.txt", "w") as f:
     for post_id in posts_replied_to:
